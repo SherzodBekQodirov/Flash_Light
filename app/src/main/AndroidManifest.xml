@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_flash"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="ru.startandroid.flashlight_new.MainActivity">
+        <activity android:name="ru.startandroid.flashlight_new.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="ru.startandroid.flashlight_new.FlashLightAppWidget">
+        <receiver android:name="ru.startandroid.flashlight_new.ui.widget.FlashLightAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -30,16 +30,16 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/flash_light_app_widget_info" />
         </receiver>
-
-        <receiver android:name="ru.startandroid.flashlight_new.FlashLightReceiver"
+        <receiver
+            android:name="ru.startandroid.flashlight_new.FlashLightReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name= "ACTION_FLASH_STATE"/>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
-
+                <action android:name="ACTION_FLASH_STATE" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>
