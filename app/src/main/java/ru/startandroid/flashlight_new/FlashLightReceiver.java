@@ -8,35 +8,19 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.util.Log;
 import android.widget.RemoteViews;
-
 import ru.startandroid.flashlight_new.ui.widget.FlashLightAppWidget;
 import sherzodbek.flashlight.R;
-
 public class FlashLightReceiver extends BroadcastReceiver {
-
-
     private Camera camera = null;
     private Camera.Parameters params;
-    private boolean isFlashLightOn = false;
-
-    public FlashLightReceiver(){
-        connectCameraService();
-    }
-
+    private static boolean isFlashLightOn = false;
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if(!action.equals(FlashLightAppWidget.FLASH_LIGHT_ACTION)) return;
-
-        // 1 marta bosilganda icon uzgardi va 1 marta morgat qildi keyin uchdi
-        // 1 marta bosganimda icon uzgardi, fonar ishlamadi, va icon qaytib uzgarmay qoldi
-        //
-
         Log.d("FlashLightReceiver", "onReceive isFlashLightOn: "+ isFlashLightOn);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.flash_light_app_widget);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        //connectCameraService();
-        //appWidgetManager.updateAppWidget(new ComponentName(context, LightWidgetProvider.class), views);
         if (isFlashLightOn) {
             offFlashLight();
             views.setImageViewResource(R.id.btnSwitcher, R.drawable.widget_light_off);
@@ -47,27 +31,28 @@ public class FlashLightReceiver extends BroadcastReceiver {
             appWidgetManager.updateAppWidget(new ComponentName(context, FlashLightAppWidget.class), views);
         }
     }
-
+    public FlashLightReceiver(){
+        connectCameraService();
+    }
     public void onFlashLight() {
-        params.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+        isFlashLightOn = true;
+        Log.d("FlashLightReceiver", "onFlashLight() "+ isFlashLightOn);
         params = camera.getParameters();
+        params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
         camera.setParameters(params);
         camera.startPreview();
-        isFlashLightOn = true;
     }
-
     public void offFlashLight() {
-        params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+        isFlashLightOn = false;
+        Log.d("FlashLightReceiver", "offFlashLight() "+ isFlashLightOn);
         params = camera.getParameters();
+        params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
         camera.setParameters(params);
         camera.stopPreview();
-        isFlashLightOn = false;
     }
-
     public void connectCameraService() {
         if (camera == null) {
             camera = Camera.open();
-            params = camera.getParameters();
         }
     }
 }
