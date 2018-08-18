@@ -10,4 +10,5 @@ public class PermissionHelper {
     public static boolean isCameraEnabled(Context context){
         return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
+
 }
