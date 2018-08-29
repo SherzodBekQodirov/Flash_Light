@@ -11,15 +11,19 @@ import android.widget.RemoteViews;
 import ru.startandroid.flashlight_new.ui.widget.FlashLightAppWidget;
 import sherzodbek.flashlight.R;
 public class FlashLightReceiver extends BroadcastReceiver {
+
     private Camera camera = null;
     private Camera.Parameters params;
     private static boolean isFlashLightOn = false;
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.flash_light_app_widget);
         String action = intent.getAction();
         if(!action.equals(FlashLightAppWidget.FLASH_LIGHT_ACTION)) return;
         Log.d("FlashLightReceiver", "onReceive isFlashLightOn: "+ isFlashLightOn);
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.flash_light_app_widget);
+
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         if (isFlashLightOn) {
             offFlashLight();
@@ -51,8 +55,15 @@ public class FlashLightReceiver extends BroadcastReceiver {
         camera.stopPreview();
     }
     public void connectCameraService() {
-        if (camera == null) {
+        if (camera != null) {
+            camera.release();
+            camera = null;
+            camera = Camera.open();
+        }else {
             camera = Camera.open();
         }
+
+
+
     }
 }

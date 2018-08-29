@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSION_CAMERA = 1;
     private ImageView bat_low;
     private View viewLayout;
-    private Boolean isClickable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             connectCameraService();
         }
 
-        // yonib uchyabtiku ha? Widget ishlamayapti tak
         imageButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
@@ -221,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // connectCameraService(); // camera permission conflict, first need ask permission
+         connectCameraService(); // camera permission conflict, first need ask permission
         if (!isFlash) {
             offFlashLight();
         }
